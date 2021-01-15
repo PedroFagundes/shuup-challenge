@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
 
@@ -11,16 +11,12 @@ class Company(models.Model):
     bic = models.CharField(max_length=150, blank=True)
 
     def get_order_count(self):
-        orders = 0
-        for order in self.orders.all():
-            orders += 1
+        orders = self.orders.count()
         return orders
 
     def get_order_sum(self):
-        total_sum = 0
-        for contact in self.contacts.all():
-            for order in contact.orders.all():
-                total_sum += order.total
+        total_sum = self.orders.aggregate(
+            models.Sum('total')).get('total__sum')
         return total_sum
 
 
@@ -32,9 +28,7 @@ class Contact(models.Model):
     email = models.EmailField()
 
     def get_order_count(self):
-        orders = 0
-        for order in self.orders.all():
-            orders += 1
+        orders = self.orders.count()
         return orders
 
 
