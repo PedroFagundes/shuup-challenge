@@ -11,5 +11,6 @@ class IndexView(ListView):
     model = Company
     paginate_by = 100
 
-    queryset = Company.objects.all().prefetch_related('contacts', 'contacts__orders').annotate(
-        order_count=Count('orders'), order_sum=Sum('orders__total'))
+    queryset = Company.objects.all().prefetch_related(
+        'contacts', 'contacts__orders').annotate(
+            order_count=Count('orders'), order_sum=Sum('orders__total'))
